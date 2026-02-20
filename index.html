@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>DIGNITY</title>
+    <!-- favicon from assets/images -->
+    <link rel="icon" type="image/png" href="assets/images/favicon.png">
+    <!-- manifest.json -->
+    <link rel="manifest" href="manifest.json">
+    <!-- Font Awesome 6 (for social icons only) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* --------------------------------------------------------------
+           ALL STYLES REMAIN EXACTLY AS PROVIDED, except we remove grayscale from contributors
+        ---------------------------------------------------------------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 1rem;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            color: #f0f0f0;
+            font-family: 'Inter', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+            line-height: 1.5;
+            font-weight: 300;
+            overflow-x: hidden;
+        }
+
+        .section {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* ----- mobile sidebar (off canvas) ----- */
+        .sidebar-checkbox { display: none; }
+
+        .hamburger {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 100;
+            font-size: 2.2rem;
+            color: white;
+            cursor: pointer;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(6px);
+            width: 50px;
+            height: 50px;
+            border-radius: 30px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: background 0.2s, border 0.2s;
+        }
+
+        @media (max-width: 800px) {
+            .hamburger {
+                background: transparent !important;
+                backdrop-filter: none !important;
+                border: none !important;
+                width: auto;
+                height: auto;
+                font-size: 2.5rem;
+            }
+        }
+
+        .sidebar-menu {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 260px;
+            height: 100vh;
+            background: rgba(15,15,20,0.98);
+            backdrop-filter: blur(16px);
+            border-left: 1px solid rgba(255,255,255,0.05);
+            z-index: 200;
+            transition: right 0.3s ease;
+            padding: 5rem 2rem;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .sidebar-menu a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 1.6rem;
+            font-weight: 200;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 0.8rem;
+        }
+
+        .sidebar-menu a:hover { color: white; }
+
+        .close-sidebar {
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            font-size: 2.5rem;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        #sidebar-toggle:checked ~ .sidebar-menu { right: 0; }
+
+        /* ----- hero (impact zone) with larger square logo above ----- */
+        .hero {
+            background: radial-gradient(circle at 50% 30%, #1e1e2f, #030303 80%);
+        }
+
+        .hero-content {
+            max-width: 900px;
+            padding: 2rem;
+            animation: fadeGlow 2s ease-out;
+            text-align: center;
+        }
+
+        .hero-square-logo {
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 1.8rem;
+            border-radius: 32px;
+            object-fit: cover;
+            box-shadow: 0 0 30px rgba(180,160,255,0.3);
+            background: #1e1e2f;
+            display: block;
+        }
+
+        .hero-logo {
+            font-size: clamp(4rem, 15vw, 8rem);
+            font-weight: 800;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255,255,255,0.4), 0 0 40px rgba(200,180,255,0.3);
+            margin-bottom: 1rem;
+            animation: float 6s infinite alternate ease-in-out;
+        }
+
+        .hero-tagline {
+            font-size: 1.3rem;
+            letter-spacing: 0.3em;
+            font-weight: 200;
+            color: #ddd;
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+
+        .btn-explore {
+            background: transparent;
+            border: 1.5px solid rgba(255,255,255,0.3);
+            color: white;
+            font-size: 1.2rem;
+            letter-spacing: 0.2rem;
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            backdrop-filter: blur(5px);
+            animation: softPulse 3s infinite;
+            display: inline-block;
+        }
+
+        .btn-explore:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: white;
+            box-shadow: 0 0 30px rgba(255,255,255,0.3);
+            transform: scale(1.02);
+        }
+
+        /* ----- about (left shifted on web view) ----- */
+        .about {
+            background: #0b0b0f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 6%;
+        }
+
+        @media (min-width: 1024px) {
+            .about {
+                justify-content: flex-start;
+                padding-left: 10%;
+            }
+            .about-text {
+                max-width: 800px;
+            }
+        }
+
+        .about-text {
+            max-width: 900px;
+            text-align: left;
+        }
+
+        .about-text h2 {
+            font-size: 3.5rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            border-left: 6px solid #a78bfa;
+            padding-left: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .about-text p {
+            font-size: 1.3rem;
+            font-weight: 200;
+            color: #bbb;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .about-highlight {
+            color: #d6c6ff;
+            font-weight: 400;
+            border-bottom: 1px solid #3c344b;
+        }
+
+        /* ----- members (70% image / 30% details) with <img> tags ----- */
+        .members {
+            background: #0f0f13;
+            flex-direction: column;
+            justify-content: center;
+            padding: 6rem 6%;
+        }
+
+        .members h2 {
+            font-size: 3rem;
+            font-weight: 400;
+            margin-bottom: 3rem;
+            text-align: center;
+            color: #eaeaea;
+        }
+
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .member-card {
+            background: rgba(30,30,40,0.5);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 40px;
+            box-shadow: 0 15px 25px -15px black;
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+            overflow: hidden;
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .member-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255,255,255,0.3);
+            box-shadow: 0 0 35px rgba(180,160,255,0.4);
+            background: rgba(45,45,60,0.7);
+        }
+
+        .member-img {
+            flex: 7;
+            background: #1f1f30;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+            transition: border 0.2s;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .member-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .member-card:hover .member-img {
+            border-color: #b6a2ff;
+        }
+
+        .member-details {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 0.5rem;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .member-name {
+            font-size: 1.6rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .member-socials {
+            display: flex;
+            gap: 1.8rem;
+            font-size: 1.8rem;
+        }
+
+        .member-socials a {
+            color: #aaa;
+            transition: color 0.2s, transform 0.2s;
+            text-decoration: none;
+        }
+
+        .member-socials a:hover {
+            color: white;
+            transform: scale(1.15);
+        }
+
+        /* ----- contributors (horizontal loop) with bigger images ----- */
+        .contributors {
+            background: #0c0c12;
+            flex-direction: column;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .contributors h3 {
+            font-size: 2.8rem;
+            font-weight: 300;
+            letter-spacing: 0.2rem;
+            margin-bottom: 3rem;
+            color: #e0e0e0;
+        }
+
+        .marquee-contributors {
+            overflow: hidden;
+            white-space: nowrap;
+            width: 100%;
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+
+        .marquee-content {
+            display: inline-flex;
+            animation: scroll 45s linear infinite;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .contributor-item {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            /* REMOVED grayscale filter – now full color always */
+            /* filter: grayscale(0.8);  <-- removed */
+            transition: filter 0.3s;
+            color: #ccc;
+        }
+
+        .contributor-item:hover {
+            /* hover effect: keep full color (no grayscale) */
+            filter: grayscale(0);  /* does nothing now, but kept for consistency */
+            color: white;
+        }
+
+        .contributor-img {
+            width: 220px;
+            height: 220px;
+            border-radius: 40px;
+            background: #232335;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            border: 2px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+        }
+
+        .contributor-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .contributor-name {
+            font-size: 1.5rem;
+            font-weight: 300;
+        }
+
+        /* ----- footer with integrated QR join section (local QR) ----- */
+        .footer {
+            background: #07070a;
+            min-height: auto;
+            padding: 3rem 6% 2rem;
+            border-top: 1px solid #1f1f2a;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .footer-join {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: rgba(20,20,30,0.4);
+            border-radius: 60px;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            background: white;
+            border-radius: 30px;
+            padding: 0.7rem;
+            box-shadow: 0 0 40px #a78bfa80;
+            animation: softPulse 3s infinite alternate;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .qr-code img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 22px;
+            display: block;
+        }
+
+        .join-message {
+            font-size: 1.4rem;
+            letter-spacing: 0.2rem;
+            color: #ccc;
+        }
+
+        .footer-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .footer-identity {
+            font-size: 2.5rem;
+            font-weight: 600;
+            letter-spacing: 0.2rem;
+            background: linear-gradient(to right, #fff, #bbb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover { color: white; }
+
+        .footer-socials {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 1.7rem;
+        }
+
+        .footer-socials a {
+            color: #888;
+            transition: all 0.2s;
+        }
+
+        .footer-socials a:hover {
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .footer-copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #222;
+            font-size: 1rem;
+            color: #777;
+        }
+
+        .footer-copyright a {
+            color: #c5b4ff;
+            text-decoration: none;
+            border-bottom: 1px dotted;
+        }
+
+        /* animations */
+        @keyframes softPulse {
+            0% { opacity: 0.9; box-shadow: 0 0 10px #a78bfa60; }
+            100% { opacity: 1; box-shadow: 0 0 30px #d4c2ffcc; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-12px); }
+        }
+
+        @keyframes fadeGlow {
+            0% { opacity: 0; text-shadow: 0 0 0 white; }
+            100% { opacity: 1; text-shadow: 0 0 20px rgba(255,255,255,0.3); }
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ----- mobile adjustments (unchanged) ----- */
+        @media (max-width: 1000px) {
+            .members-grid { grid-template-columns: repeat(2, 1fr); }
+            .member-card { height: 550px; }
+            .contributor-img {
+                width: 180px;
+                height: 180px;
+            }
+        }
+
+        @media (max-width: 800px) {
+            .hamburger { display: flex; }
+            .about-text h2 { font-size: 2.8rem; }
+            .contributor-img {
+                width: 160px;
+                height: 160px;
+            }
+            .contributor-name { font-size: 1.3rem; }
+        }
+
+        @media (max-width: 700px) {
+            .members-grid { grid-template-columns: 1fr; }
+            .member-card {
+                width: 100%;
+                max-width: 100%;
+                margin: 0;
+                height: 520px;
+            }
+            .member-name { font-size: 1.5rem; }
+            .member-socials { gap: 1.5rem; font-size: 1.8rem; }
+
+            .contributor-img {
+                width: 150px;
+                height: 150px;
+            }
+
+            .qr-code {
+                width: 170px;
+                height: 170px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .member-card { height: 480px; }
+            .member-name { font-size: 1.4rem; }
+            .member-socials { gap: 1.2rem; font-size: 1.6rem; }
+            .contributor-img {
+                width: 130px;
+                height: 130px;
+            }
+            .qr-code {
+                width: 150px;
+                height: 150px;
+            }
+            .footer-grid { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <input type="checkbox" id="sidebar-toggle" class="sidebar-checkbox">
+    <label for="sidebar-toggle" class="hamburger"><i class="fa-solid fa-bars"></i></label>
+
+    <div class="sidebar-menu">
+        <label for="sidebar-toggle" class="close-sidebar"><i class="fa-solid fa-xmark"></i></label>
+        <a href="#hero" onclick="document.getElementById('sidebar-toggle').checked = false">HOME</a>
+        <a href="#about" onclick="document.getElementById('sidebar-toggle').checked = false">STORY</a>
+        <a href="#members" onclick="document.getElementById('sidebar-toggle').checked = false">CIRCLE</a>
+        <a href="#contributors" onclick="document.getElementById('sidebar-toggle').checked = false">CONTRIBUTORS</a>
+        <a href="#join" onclick="document.getElementById('sidebar-toggle').checked = false">JOIN</a>
+    </div>
+
+    <!-- HERO with square logo from assets/images/ -->
+    <section class="hero section" id="hero">
+        <div class="hero-content">
+            <img src="assets/images/logo.png" alt="DIGNITY square logo" class="hero-square-logo">
+            <div class="hero-logo">DIGNITY</div>
+            <div class="hero-tagline">ELEVATE THE ORDINARY</div>
+            <a href="#about" class="btn-explore">EXPLORE <i class="fa-regular fa-compass" style="margin-left: 10px;"></i></a>
+        </div>
+    </section>
+
+    <!-- ABOUT (no image) -->
+    <section class="about section" id="about">
+        <div class="about-text">
+            <h2>DIGNITY<br>is not a brand.<br>It's a discipline.</h2>
+            <p>We are a group of friends who believe that respect for our surroundings reflects the respect we have for ourselves. Instead of waiting for change, we choose to create it. <span class="about-highlight">No random group</span> — we work together with unity, creativity, and dedication. Every decoration, every effort, every small improvement is done with pride.</p>
+            <p>We believe real dignity begins from where we live.
+And through teamwork and commitment, we aim to make our area cleaner, brighter, and more beautiful every single day. </p>
+            <span class="about-highlight">Stay connected. Stay inspired.</span>
+            <p style="font-size:1rem; color:#888; margin-top:2rem;">founded in 2013 · Kurla · Mumbai · Maharashtra </p>
+        </div>
+    </section>
+
+    <!-- MEMBERS – images from assets/images/members/ -->
+    <section class="members section" id="members">
+        <h2>THE CIRCLE</h2>
+        <div class="members-grid" id="membersGrid"></div>
+    </section>
+
+    <!-- CONTRIBUTORS – now full color (no grayscale) with ashraf_azmi.jpg special -->
+    <section class="contributors section" id="contributors">
+        <h3>CONTRIBUTOR SUPPOTERS</h3>
+        <div class="marquee-contributors">
+            <div class="marquee-content" id="contributorsMarquee"></div>
+        </div>
+    </section>
+
+    <!-- FOOTER with QR from assets/images/qr-code.png -->
+    <footer class="footer section" style="min-height: auto;">
+        <div class="footer-join" id="join">
+            <div class="qr-code">
+                <img src="assets/images/qr-code.png" alt="QR code">
+            </div>
+            <div class="join-message">@DIGNITY · join the community</div>
+        </div>
+
+        <div class="footer-grid">
+            <div class="footer-identity">DIGNITY</div>
+            <div class="footer-links">
+                <a href="#hero">home</a>
+                <a href="#about">story</a>
+                <a href="#members">circle</a>
+                <a href="#contributors">contributors</a>
+            </div>
+            <div class="footer-socials">
+                <a href="#"><i class="fab fa-x-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <!-- LinkedIn icon removed as requested -->
+            </div>
+        </div>
+        <div class="footer-copyright">
+            Developed by – <strong>OBAIDULLAH SHAIKH</strong> 
+            <a href="https://obaidshaikh.vercel.app/" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square" style="margin-left: 8px;"></i> </a>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            // 15 members – images from assets/images/members/member1.jpg ... member15.jpg
+            const members = [
+                { name: 'OBAIDULLAH SHAIKH', wa: 'https://wa.me/9769443373', ig: 'https://www.instagram.com/official_mr_obaid?igsh=MTN4MmZxaGNvbGduMQ==' },
+                { name: 'ANSARI SAIFULHUDA', wa: 'https://wa.me/9619461099', ig: 'https://www.instagram.com/_ans_saifulhuda_?igsh=cThmdTZiNWZnMHA3' },
+                { name: 'RAJESHWAR SINGH', wa: 'https://wa.me/9167642556', ig: 'https://www.instagram.com/iamraj__21?igsh=MXBnOGx3aG5mdm9reg==' },
+                { name: 'FAHAD SHAIKH', wa: 'https://wa.me/9833599980', ig: 'https://www.instagram.com/fahaddd__4t6?igsh=bm5tZjVqd2E3ZDh5' },
+                { name: 'SAEED SHAIKH', wa: 'https://wa.me/7700911459', ig: 'https://www.instagram.com/shaikhlala141?igsh=YWp4d2syMGJvamVi' },
+                { name: 'HASHIM SHAIKH', wa: 'https://wa.me/7506949793', ig: 'https://www.instagram.com/atelier_sk_hashim?igsh=MTRjZGpydzVuNW10Ng==' },
+                { name: 'IMRAN SHAIKH', wa: 'https://wa.me/8828995851', ig: 'https://www.instagram.com/ans_imran_70?igsh=MW91Mzl3Ymhibng0ZQ==' },
+                { name: 'SALAM SHAIKH', wa: 'https://wa.me/8097632845', ig: 'https://www.instagram.com/_.zehenn?igsh=c25zbmRweDZzbzV1' },
+                { name: 'ANSARI SABIR', wa: 'https://wa.me/7045309302', ig: 'https://www.instagram.com/ans_sabir_70?igsh=cDU0dW53Zmc5cGNz' },
+                { name: 'RIZWAN SHAIKH', wa: 'https://wa.me/9324136663', ig: 'https://www.instagram.com/rizwanishere_?igsh=MTBieG01bmI5cDJsZA==' },
+                { name: 'SHAHBAZ SHAIKH', wa: 'https://wa.me/8318304601', ig: 'https://www.instagram.com/the_shaikh______?igsh=MW80NGNsNGw3ODF3YQ==' },
+                { name: 'OWAIS SHAIKH', wa: 'https://wa.me/9969590291', ig: 'https://www.instagram.com/shk.owais____?igsh=MXQ0Y2E5eXF0anByYg==' },
+                { name: 'AIJAZ MOMIN', wa: 'https://wa.me/8850443668', ig: 'https://www.instagram.com/aj_momin_?igsh=MWszc200NHJiNGF6aQ==' },
+                { name: 'RAHMAN SHAIKH', wa: 'https://wa.me/7506839334', ig: 'https://www.instagram.com/its__raheman__70?igsh=MWtrNzhyZ3loeHoxOQ==' },
+                { name: 'ARBAZ SHAIKH', wa: 'https://wa.me/7045413575', ig: 'https://www.instagram.com/shaikh_arbaz_70?igsh=MWVyMzJwdDlzOW91Zw==' }
+            ];
+
+            const grid = document.getElementById('membersGrid');
+            if (grid) {
+                members.forEach((m, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'member-card';
+
+                    const imgDiv = document.createElement('div');
+                    imgDiv.className = 'member-img';
+                    
+                    const img = document.createElement('img');
+                    img.src = `assets/images/members/member${index+1}.jpg`;
+                    img.alt = m.name;
+                    
+                    imgDiv.appendChild(img);
+
+                    const detailsDiv = document.createElement('div');
+                    detailsDiv.className = 'member-details';
+
+                    const nameDiv = document.createElement('div');
+                    nameDiv.className = 'member-name';
+                    nameDiv.textContent = m.name;
+
+                    const socialDiv = document.createElement('div');
+                    socialDiv.className = 'member-socials';
+                    socialDiv.innerHTML = `
+                        <a href="${m.wa}" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        <a href="${m.ig}" target="_blank"><i class="fab fa-instagram"></i></a>
+                    `;
+
+                    detailsDiv.appendChild(nameDiv);
+                    detailsDiv.appendChild(socialDiv);
+                    card.appendChild(imgDiv);
+                    card.appendChild(detailsDiv);
+                    grid.appendChild(card);
+                });
+            }
+
+            // contributors (10) – with custom image for
+            const contributors = [
+                { name: 'MEHRAB SHAIKH' }, 
+                { name: 'GUFRAN SHAIKH ' }, 
+                { name: 'RAFIQ SHAIKH' },
+                // { name: 'GURAN SHAIKH' }, 
+                { name: 'ASHRAF AZMI' },      
+                { name: 'ARBAZ SHAIKH' },
+                // { name: 'Ibrahim Diallo' }, 
+                // { name: 'Mei Lin' }, 
+                // { name: 'Carlos M.' },
+                // { name: 'Fatima Z.' }
+            ];
+
+            const marquee = document.getElementById('contributorsMarquee');
+            if (marquee) {
+                function createSet() {
+                    const frag = document.createDocumentFragment();
+                    contributors.forEach((c, idx) => {
+                        const item = document.createElement('div');
+                        item.className = 'contributor-item';
+                        const imgDiv = document.createElement('div');
+                        imgDiv.className = 'contributor-img';
+                        const img = document.createElement('img');
+                        
+                        // special case for Ashraf Azmi
+                        if (c.name === 'ASHRAF AZMI') {
+                            img.src = 'assets/images/contributors/ashraf_azmi.jpg';
+                        } else {
+                            img.src = `assets/images/contributors/contributor${idx+1}.jpg`;
+                        }
+                        
+                        img.alt = c.name;
+                        imgDiv.appendChild(img);
+                        const nameSpan = document.createElement('div');
+                        nameSpan.className = 'contributor-name';
+                        nameSpan.textContent = c.name;
+                        item.appendChild(imgDiv);
+                        item.appendChild(nameSpan);
+                        frag.appendChild(item);
+                    });
+                    return frag;
+                }
+                marquee.appendChild(createSet());
+                marquee.appendChild(createSet()); // two copies for seamless loop
+            }
+        })();
+    </script>
+
+    <script>
+        // close sidebar when link clicked
+        document.querySelectorAll('.sidebar-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('sidebar-toggle').checked = false;
+            });
+        });
+    </script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js').then(function(registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function(err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
