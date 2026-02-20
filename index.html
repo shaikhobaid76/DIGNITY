@@ -4,16 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>DIGNITY</title>
-    <!-- favicon from assets/images -->
+    <!-- favicon -->
     <link rel="icon" type="image/png" href="assets/images/favicon.png">
-    <!-- manifest.json -->
     <link rel="manifest" href="manifest.json">
-    <!-- Font Awesome 6 (for social icons only) -->
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* --------------------------------------------------------------
-           ALL STYLES REMAIN EXACTLY AS PROVIDED, except we remove grayscale from contributors
-        ---------------------------------------------------------------- */
         * {
             margin: 0;
             padding: 0;
@@ -77,6 +73,14 @@
             }
         }
 
+        @media (min-width: 1024px) {
+            .hamburger {
+                font-size: 1.8rem;
+                width: 40px;
+                height: 40px;
+            }
+        }
+
         .sidebar-menu {
             position: fixed;
             top: 0;
@@ -117,7 +121,7 @@
 
         #sidebar-toggle:checked ~ .sidebar-menu { right: 0; }
 
-        /* ----- hero (impact zone) with larger square logo above ----- */
+        /* ----- hero ----- */
         .hero {
             background: radial-gradient(circle at 50% 30%, #1e1e2f, #030303 80%);
         }
@@ -135,9 +139,14 @@
             margin: 0 auto 1.8rem;
             border-radius: 32px;
             object-fit: cover;
-            box-shadow: 0 0 30px rgba(180,160,255,0.3);
-            background: #1e1e2f;
             display: block;
+        }
+
+        @media (min-width: 1024px) {
+            .hero-square-logo {
+                width: 220px;
+                height: 220px;
+            }
         }
 
         .hero-logo {
@@ -183,7 +192,7 @@
             transform: scale(1.02);
         }
 
-        /* ----- about (left shifted on web view) ----- */
+        /* ----- about ----- */
         .about {
             background: #0b0b0f;
             display: flex;
@@ -230,7 +239,7 @@
             border-bottom: 1px solid #3c344b;
         }
 
-        /* ----- members (70% image / 30% details) with <img> tags ----- */
+        /* ----- members (70% image / 30% details) with role ----- */
         .members {
             background: #0f0f13;
             flex-direction: column;
@@ -311,8 +320,17 @@
         .member-name {
             font-size: 1.6rem;
             font-weight: 500;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.2rem;
             text-align: center;
+        }
+
+        .member-role {
+            font-size: 1rem;
+            font-weight: 300;
+            color: #c5b4ff;
+            margin-bottom: 0.8rem;
+            text-align: center;
+            letter-spacing: 0.05rem;
         }
 
         .member-socials {
@@ -332,7 +350,7 @@
             transform: scale(1.15);
         }
 
-        /* ----- contributors (horizontal loop) with bigger images ----- */
+        /* ----- contributors (unchanged) ----- */
         .contributors {
             background: #0c0c12;
             flex-direction: column;
@@ -366,15 +384,11 @@
             display: inline-flex;
             flex-direction: column;
             align-items: center;
-            /* REMOVED grayscale filter – now full color always */
-            /* filter: grayscale(0.8);  <-- removed */
             transition: filter 0.3s;
             color: #ccc;
         }
 
         .contributor-item:hover {
-            /* hover effect: keep full color (no grayscale) */
-            filter: grayscale(0);  /* does nothing now, but kept for consistency */
             color: white;
         }
 
@@ -403,7 +417,195 @@
             font-weight: 300;
         }
 
-        /* ----- footer with integrated QR join section (local QR) ----- */
+        /* ----- lite members with arrow navigation ----- */
+        .lite-members {
+            background: #0a0a0f;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem 6%;
+            position: relative;
+        }
+
+        .lite-members h2 {
+            font-size: 2.8rem;
+            font-weight: 300;
+            letter-spacing: 0.2rem;
+            margin-bottom: 2.5rem;
+            color: #e0e0e0;
+            text-align: center;
+        }
+
+        .lite-members-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .lite-members-wrapper {
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .lite-members-track {
+            display: flex;
+            gap: 2rem;
+            transition: transform 0.4s ease;
+        }
+
+        .lite-member-card {
+            flex: 0 0 auto;
+            width: calc((100% - 6rem) / 4); /* 4 cards on desktop with gap */
+            background: rgba(30,30,40,0.5);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 30px;
+            box-shadow: 0 15px 25px -15px black;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+            aspect-ratio: 3/4; /* keeps card square-ish */
+        }
+
+        .lite-member-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255,255,255,0.3);
+            box-shadow: 0 0 35px rgba(180,160,255,0.4);
+            background: rgba(45,45,60,0.7);
+        }
+
+        .lite-member-img {
+            flex: 7;
+            background: #1f1f30;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+            transition: border 0.2s;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .lite-member-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .lite-member-card:hover .lite-member-img {
+            border-color: #b6a2ff;
+        }
+
+        .lite-member-details {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem 0.5rem;
+            /* no background */
+        }
+
+        .lite-member-name {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 0.2rem;
+            text-align: center;
+        }
+
+        .lite-member-role {
+            font-size: 0.9rem;
+            font-weight: 300;
+            color: #c5b4ff;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .lite-member-socials {
+            display: flex;
+            gap: 1.2rem;
+            font-size: 1.4rem;
+        }
+
+        .lite-member-socials a {
+            color: #aaa;
+            transition: color 0.2s, transform 0.2s;
+            text-decoration: none;
+        }
+
+        .lite-member-socials a:hover {
+            color: white;
+            transform: scale(1.15);
+        }
+
+        /* Navigation arrows */
+        .lite-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            background: rgba(20,20,30,0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: white;
+            font-size: 1.8rem;
+            transition: all 0.2s;
+            z-index: 10;
+        }
+
+        .lite-arrow:hover {
+            background: rgba(167,139,250,0.3);
+            border-color: #a78bfa;
+            box-shadow: 0 0 15px rgba(167,139,250,0.5);
+        }
+
+        .lite-arrow.left {
+            left: -22px;
+        }
+
+        .lite-arrow.right {
+            right: -22px;
+        }
+
+        .lite-arrow.disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        /* Responsive for lite members */
+        @media (max-width: 1024px) {
+            .lite-member-card {
+                width: calc((100% - 4rem) / 3); /* 3 cards on tablet */
+            }
+        }
+
+        @media (max-width: 700px) {
+            .lite-member-card {
+                width: 100%; /* 1 card on mobile */
+            }
+            .lite-arrow {
+                width: 36px;
+                height: 36px;
+                font-size: 1.4rem;
+            }
+            .lite-arrow.left {
+                left: -10px;
+            }
+            .lite-arrow.right {
+                right: -10px;
+            }
+        }
+
+        /* ----- footer (unchanged) ----- */
         .footer {
             background: #07070a;
             min-height: auto;
@@ -428,15 +630,8 @@
         .qr-code {
             width: 200px;
             height: 200px;
-            background: white;
             border-radius: 30px;
-            padding: 0.7rem;
-            box-shadow: 0 0 40px #a78bfa80;
-            animation: softPulse 3s infinite alternate;
             margin-bottom: 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             overflow: hidden;
         }
 
@@ -537,7 +732,7 @@
             100% { transform: translateX(-50%); }
         }
 
-        /* ----- mobile adjustments (unchanged) ----- */
+        /* responsive adjustments for other sections */
         @media (max-width: 1000px) {
             .members-grid { grid-template-columns: repeat(2, 1fr); }
             .member-card { height: 550px; }
@@ -574,8 +769,8 @@
             }
 
             .qr-code {
-                width: 170px;
-                height: 170px;
+                width: 190px;
+                height: 190px;
             }
         }
 
@@ -588,8 +783,8 @@
                 height: 130px;
             }
             .qr-code {
-                width: 150px;
-                height: 150px;
+                width: 160px;
+                height: 160px;
             }
             .footer-grid { flex-direction: column; text-align: center; }
         }
@@ -603,13 +798,14 @@
     <div class="sidebar-menu">
         <label for="sidebar-toggle" class="close-sidebar"><i class="fa-solid fa-xmark"></i></label>
         <a href="#hero" onclick="document.getElementById('sidebar-toggle').checked = false">HOME</a>
-        <a href="#about" onclick="document.getElementById('sidebar-toggle').checked = false">STORY</a>
-        <a href="#members" onclick="document.getElementById('sidebar-toggle').checked = false">CIRCLE</a>
+        <a href="#about" onclick="document.getElementById('sidebar-toggle').checked = false">ABOUT</a>
+        <a href="#members" onclick="document.getElementById('sidebar-toggle').checked = false">MEMBERS</a>
+        <a href="#lite-members" onclick="document.getElementById('sidebar-toggle').checked = false">LITE MEMBERS</a>
         <a href="#contributors" onclick="document.getElementById('sidebar-toggle').checked = false">CONTRIBUTORS</a>
         <a href="#join" onclick="document.getElementById('sidebar-toggle').checked = false">JOIN</a>
     </div>
 
-    <!-- HERO with square logo from assets/images/ -->
+    <!-- HERO -->
     <section class="hero section" id="hero">
         <div class="hero-content">
             <img src="assets/images/logo.png" alt="DIGNITY square logo" class="hero-square-logo">
@@ -619,33 +815,44 @@
         </div>
     </section>
 
-    <!-- ABOUT (no image) -->
+    <!-- ABOUT -->
     <section class="about section" id="about">
         <div class="about-text">
             <h2>DIGNITY<br>is not a brand.<br>It's a discipline.</h2>
             <p>We are a group of friends who believe that respect for our surroundings reflects the respect we have for ourselves. Instead of waiting for change, we choose to create it. <span class="about-highlight">No random group</span> — we work together with unity, creativity, and dedication. Every decoration, every effort, every small improvement is done with pride.</p>
-            <p>We believe real dignity begins from where we live.
-And through teamwork and commitment, we aim to make our area cleaner, brighter, and more beautiful every single day. </p>
+            <p>We believe real dignity begins from where we live. And through teamwork and commitment, we aim to make our area cleaner, brighter, and more beautiful every single day.</p>
             <span class="about-highlight">Stay connected. Stay inspired.</span>
-            <p style="font-size:1rem; color:#888; margin-top:2rem;">founded in 2013 · Kurla · Mumbai · Maharashtra </p>
+            <p style="font-size:1rem; color:#888; margin-top:2rem;">founded in 2013 · Kurla · Mumbai · Maharashtra</p>
         </div>
     </section>
 
-    <!-- MEMBERS – images from assets/images/members/ -->
+    <!-- MEMBERS with role -->
     <section class="members section" id="members">
-        <h2>THE CIRCLE</h2>
+        <h2>MEMBERS</h2>
         <div class="members-grid" id="membersGrid"></div>
     </section>
 
-    <!-- CONTRIBUTORS – now full color (no grayscale) with ashraf_azmi.jpg special -->
+    <!-- LITE MEMBERS with arrow navigation -->
+    <section class="lite-members section" id="lite-members">
+        <h2>LITE MEMBERS</h2>
+        <div class="lite-members-container">
+            <div class="lite-arrow left" id="liteArrowLeft"><i class="fa-solid fa-chevron-left"></i></div>
+            <div class="lite-arrow right" id="liteArrowRight"><i class="fa-solid fa-chevron-right"></i></div>
+            <div class="lite-members-wrapper">
+                <div class="lite-members-track" id="liteMembersTrack"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTRIBUTORS -->
     <section class="contributors section" id="contributors">
-        <h3>CONTRIBUTOR SUPPOTERS</h3>
+        <h3>CONTRIBUTORS</h3>
         <div class="marquee-contributors">
             <div class="marquee-content" id="contributorsMarquee"></div>
         </div>
     </section>
 
-    <!-- FOOTER with QR from assets/images/qr-code.png -->
+    <!-- FOOTER -->
     <footer class="footer section" style="min-height: auto;">
         <div class="footer-join" id="join">
             <div class="qr-code">
@@ -657,42 +864,42 @@ And through teamwork and commitment, we aim to make our area cleaner, brighter, 
         <div class="footer-grid">
             <div class="footer-identity">DIGNITY</div>
             <div class="footer-links">
-                <a href="#hero">home</a>
-                <a href="#about">story</a>
-                <a href="#members">circle</a>
+                <a href="#home">home</a>
+                <a href="#about">about</a>
+                <a href="#members">members</a>
                 <a href="#contributors">contributors</a>
             </div>
             <div class="footer-socials">
-                <a href="#"><i class="fab fa-x-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <!-- LinkedIn icon removed as requested -->
+                <a href="https://www.instagram.com/dignity_70?igsh=YXlnOWIycTJiMzho"><i class="fab fa-instagram"></i></a>
+                <a href="https://chat.whatsapp.com/ER6lg70Laud3JGPZkvK08S?mode=gi_t" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                <a href="mailto:dignityofficial70@gmail.com"><i class="fa-regular fa-envelope"></i></a>
             </div>
         </div>
         <div class="footer-copyright">
             Developed by – <strong>OBAIDULLAH SHAIKH</strong> 
-            <a href="https://obaidshaikh.vercel.app/" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square" style="margin-left: 8px;"></i> </a>
+            <a href="https://obaidshaikh.vercel.app/" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square" style="margin-left: 8px;"></i></a>
         </div>
     </footer>
 
     <script>
         (function() {
-            // 15 members – images from assets/images/members/member1.jpg ... member15.jpg
+            // ----- MEMBERS with role added -----
             const members = [
-                { name: 'OBAIDULLAH SHAIKH', wa: 'https://wa.me/9769443373', ig: 'https://www.instagram.com/official_mr_obaid?igsh=MTN4MmZxaGNvbGduMQ==' },
-                { name: 'ANSARI SAIFULHUDA', wa: 'https://wa.me/9619461099', ig: 'https://www.instagram.com/_ans_saifulhuda_?igsh=cThmdTZiNWZnMHA3' },
-                { name: 'RAJESHWAR SINGH', wa: 'https://wa.me/9167642556', ig: 'https://www.instagram.com/iamraj__21?igsh=MXBnOGx3aG5mdm9reg==' },
-                { name: 'FAHAD SHAIKH', wa: 'https://wa.me/9833599980', ig: 'https://www.instagram.com/fahaddd__4t6?igsh=bm5tZjVqd2E3ZDh5' },
-                { name: 'SAEED SHAIKH', wa: 'https://wa.me/7700911459', ig: 'https://www.instagram.com/shaikhlala141?igsh=YWp4d2syMGJvamVi' },
-                { name: 'HASHIM SHAIKH', wa: 'https://wa.me/7506949793', ig: 'https://www.instagram.com/atelier_sk_hashim?igsh=MTRjZGpydzVuNW10Ng==' },
-                { name: 'IMRAN SHAIKH', wa: 'https://wa.me/8828995851', ig: 'https://www.instagram.com/ans_imran_70?igsh=MW91Mzl3Ymhibng0ZQ==' },
-                { name: 'SALAM SHAIKH', wa: 'https://wa.me/8097632845', ig: 'https://www.instagram.com/_.zehenn?igsh=c25zbmRweDZzbzV1' },
-                { name: 'ANSARI SABIR', wa: 'https://wa.me/7045309302', ig: 'https://www.instagram.com/ans_sabir_70?igsh=cDU0dW53Zmc5cGNz' },
-                { name: 'RIZWAN SHAIKH', wa: 'https://wa.me/9324136663', ig: 'https://www.instagram.com/rizwanishere_?igsh=MTBieG01bmI5cDJsZA==' },
-                { name: 'SHAHBAZ SHAIKH', wa: 'https://wa.me/8318304601', ig: 'https://www.instagram.com/the_shaikh______?igsh=MW80NGNsNGw3ODF3YQ==' },
-                { name: 'OWAIS SHAIKH', wa: 'https://wa.me/9969590291', ig: 'https://www.instagram.com/shk.owais____?igsh=MXQ0Y2E5eXF0anByYg==' },
-                { name: 'AIJAZ MOMIN', wa: 'https://wa.me/8850443668', ig: 'https://www.instagram.com/aj_momin_?igsh=MWszc200NHJiNGF6aQ==' },
-                { name: 'RAHMAN SHAIKH', wa: 'https://wa.me/7506839334', ig: 'https://www.instagram.com/its__raheman__70?igsh=MWtrNzhyZ3loeHoxOQ==' },
-                { name: 'ARBAZ SHAIKH', wa: 'https://wa.me/7045413575', ig: 'https://www.instagram.com/shaikh_arbaz_70?igsh=MWVyMzJwdDlzOW91Zw==' }
+                { name: 'OBAIDULLAH SHAIKH', role: 'Ethical Hacker', wa: 'https://wa.me/9769443373', ig: 'https://www.instagram.com/official_mr_obaid?igsh=MTN4MmZxaGNvbGduMQ==' },
+                { name: 'ANSARI SAIFULHUDA', role: 'Fashion Designer', wa: 'https://wa.me/9619461099', ig: 'https://www.instagram.com/_ans_saifulhuda_?igsh=cThmdTZiNWZnMHA3' },
+                { name: 'RAJESHWAR SINGH', role: 'graphic Designer', wa: 'https://wa.me/9167642556', ig: 'https://www.instagram.com/iamraj__21?igsh=MXBnOGx3aG5mdm9reg==' },
+                { name: 'FAHAD KHAN', role: 'supplier', wa: 'https://wa.me/9833599980', ig: 'https://www.instagram.com/fahaddd__4t6?igsh=bm5tZjVqd2E3ZDh5' },
+                { name: 'SAEED SHAIKH', role: 'Salesman ', wa: 'https://wa.me/7700911459', ig: 'https://www.instagram.com/shaikhlala141?igsh=YWp4d2syMGJvamVi' },
+                { name: 'HASHIM SHAIKH', role: 'Architect', wa: 'https://wa.me/7506949793', ig: 'https://www.instagram.com/atelier_sk_hashim?igsh=MTRjZGpydzVuNW10Ng==' },
+                { name: 'IMRAN ANSARI', role: 'Phlebotomist', wa: 'https://wa.me/8828995851', ig: 'https://www.instagram.com/ans_imran_70?igsh=MW91Mzl3Ymhibng0ZQ==' },
+                { name: 'SALAM SHAIKH', role: 'AC Technician', wa: 'https://wa.me/8097632845', ig: 'https://www.instagram.com/_.zehenn?igsh=c25zbmRweDZzbzV1' },
+                { name: 'ANSARI SABIR', role: 'Men’s Ethnic Tailor', wa: 'https://wa.me/7045309302', ig: 'https://www.instagram.com/ans_sabir_70?igsh=cDU0dW53Zmc5cGNz' },
+                { name: 'RIZWAN SHAIKH', role: 'Bike Technician', wa: 'https://wa.me/9324136663', ig: 'https://www.instagram.com/rizwanishere_?igsh=MTBieG01bmI5cDJsZA==' },
+                { name: 'SHAHBAZ SHAIKH', role: 'Network Technician', wa: 'https://wa.me/8318304601', ig: 'https://www.instagram.com/the_shaikh______?igsh=MW80NGNsNGw3ODF3YQ==' },
+                { name: 'AIJAZ MOMIN', role: 'Cyber Cafe Operator', wa: 'https://wa.me/8850443668', ig: 'https://www.instagram.com/aj_momin_?igsh=MWszc200NHJiNGF6aQ==' },
+                { name: 'ARBAZ SHAIKH', role: 'Auto Electrician.', wa: 'https://wa.me/7045413575', ig: 'https://www.instagram.com/shaikh_arbaz_70?igsh=MWVyMzJwdDlzOW91Zw==' }
+                // { name: 'RAHMAN SHAIKH', role: 'Helper', wa: 'https://wa.me/7506839334', ig: 'https://www.instagram.com/its__raheman__70?igsh=MWtrNzhyZ3loeHoxOQ==' },
+                // { name: 'ARBAZ SHAIKH', role: 'Creative', wa: 'https://wa.me/7045413575', ig: 'https://www.instagram.com/shaikh_arbaz_70?igsh=MWVyMzJwdDlzOW91Zw==' }
             ];
 
             const grid = document.getElementById('membersGrid');
@@ -703,11 +910,9 @@ And through teamwork and commitment, we aim to make our area cleaner, brighter, 
 
                     const imgDiv = document.createElement('div');
                     imgDiv.className = 'member-img';
-                    
                     const img = document.createElement('img');
                     img.src = `assets/images/members/member${index+1}.jpg`;
                     img.alt = m.name;
-                    
                     imgDiv.appendChild(img);
 
                     const detailsDiv = document.createElement('div');
@@ -717,6 +922,10 @@ And through teamwork and commitment, we aim to make our area cleaner, brighter, 
                     nameDiv.className = 'member-name';
                     nameDiv.textContent = m.name;
 
+                    const roleDiv = document.createElement('div');
+                    roleDiv.className = 'member-role';
+                    roleDiv.textContent = m.role;
+
                     const socialDiv = document.createElement('div');
                     socialDiv.className = 'member-socials';
                     socialDiv.innerHTML = `
@@ -725,6 +934,7 @@ And through teamwork and commitment, we aim to make our area cleaner, brighter, 
                     `;
 
                     detailsDiv.appendChild(nameDiv);
+                    detailsDiv.appendChild(roleDiv);
                     detailsDiv.appendChild(socialDiv);
                     card.appendChild(imgDiv);
                     card.appendChild(detailsDiv);
@@ -732,18 +942,14 @@ And through teamwork and commitment, we aim to make our area cleaner, brighter, 
                 });
             }
 
-            // contributors (10) – with custom image for
+            // ----- CONTRIBUTORS (unchanged) -----
             const contributors = [
-                { name: 'MEHRAB SHAIKH' }, 
-                { name: 'GUFRAN SHAIKH ' }, 
+                { name: 'MEHRAB KHAN' }, 
+                { name: 'GUFRAN SHAIKH' }, 
                 { name: 'RAFIQ SHAIKH' },
-                // { name: 'GURAN SHAIKH' }, 
+                { name: 'ZIAUL' }, 
                 { name: 'ASHRAF AZMI' },      
-                { name: 'ARBAZ SHAIKH' },
-                // { name: 'Ibrahim Diallo' }, 
-                // { name: 'Mei Lin' }, 
-                // { name: 'Carlos M.' },
-                // { name: 'Fatima Z.' }
+                { name: 'ARBAZ SHAIKH' }
             ];
 
             const marquee = document.getElementById('contributorsMarquee');
@@ -757,7 +963,6 @@ And through teamwork and commitment, we aim to make our area cleaner, brighter, 
                         imgDiv.className = 'contributor-img';
                         const img = document.createElement('img');
                         
-                        // special case for Ashraf Azmi
                         if (c.name === 'ASHRAF AZMI') {
                             img.src = 'assets/images/contributors/ashraf_azmi.jpg';
                         } else {
@@ -776,7 +981,123 @@ And through teamwork and commitment, we aim to make our area cleaner, brighter, 
                     return frag;
                 }
                 marquee.appendChild(createSet());
-                marquee.appendChild(createSet()); // two copies for seamless loop
+                marquee.appendChild(createSet());
+            }
+
+            // ----- LITE MEMBERS with role and arrow navigation -----
+            const liteMembers = [
+                { name: 'OWAIS SHAIKH', role: 'Student', wa: 'https://wa.me/9969590291', ig: 'https://www.instagram.com/aj_momin_?igsh=MWszc200NHJiNGF6aQ==' },
+                { name: 'ARSALAN SHAIKH', role: 'Student', wa: 'https://wa.me/8928460225', ig: 'https://www.instagram.com/_arshuuuu._.01?igsh=OG5jMjBjNWVxYzZw' },
+                { name: 'ARYAN GUPTA', role: 'Student', wa: 'https://wa.me/1234567893', ig: 'https://www.instagram.com/_aryannnn_pvt_?igsh=MXhoeTllcnV0cml2bA==' },
+                { name: 'FAHAD SHAIKH', role: 'Student', wa: 'https://wa.me/9769067064', ig: 'https://www.instagram.com/_shk.__.fahxd___?igsh=YzBwZnQweXlvaTZu' },
+                { name: 'ASHFAK SAYYED', role: 'Student', wa: 'https://wa.me/8369467670', ig: 'https://www.instagram.com/ashfaqq_94?igsh=MXZmZ2l6Y2d0a3BkNw==' },
+                { name: 'RAHMAN SHAIKH', role: 'Worker', wa: 'https://wa.me/7506839334', ig: 'https://www.instagram.com/its__raheman__70?igsh=MWtrNzhyZ3loeHoxOQ==' },
+                { name: 'SALMAN SHAIKH', role: 'Kid', wa: 'https://wa.me/1234567896', ig: 'https://www.instagram.com/salman___70___?igsh=MmxxcXI4MWEwY2Ny' },
+                // { name: 'SAIRA SHAIKH', role: 'Student', wa: 'https://wa.me/1234567897', ig: 'https://instagram.com/saira' }
+            ];
+
+            const liteTrack = document.getElementById('liteMembersTrack');
+            if (liteTrack) {
+                liteMembers.forEach((m, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'lite-member-card';
+
+                    const imgDiv = document.createElement('div');
+                    imgDiv.className = 'lite-member-img';
+                    const img = document.createElement('img');
+                    img.src = `assets/images/lite-members/lite${index+1}.jpg`;
+                    img.alt = m.name;
+                    imgDiv.appendChild(img);
+
+                    const detailsDiv = document.createElement('div');
+                    detailsDiv.className = 'lite-member-details';
+
+                    const nameDiv = document.createElement('div');
+                    nameDiv.className = 'lite-member-name';
+                    nameDiv.textContent = m.name;
+
+                    const roleDiv = document.createElement('div');
+                    roleDiv.className = 'lite-member-role';
+                    roleDiv.textContent = m.role;
+
+                    const socialDiv = document.createElement('div');
+                    socialDiv.className = 'lite-member-socials';
+                    socialDiv.innerHTML = `
+                        <a href="${m.wa}" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        <a href="${m.ig}" target="_blank"><i class="fab fa-instagram"></i></a>
+                    `;
+
+                    detailsDiv.appendChild(nameDiv);
+                    detailsDiv.appendChild(roleDiv);
+                    detailsDiv.appendChild(socialDiv);
+                    card.appendChild(imgDiv);
+                    card.appendChild(detailsDiv);
+                    liteTrack.appendChild(card);
+                });
+            }
+
+            // Arrow navigation logic for lite members
+            const track = document.getElementById('liteMembersTrack');
+            const leftArrow = document.getElementById('liteArrowLeft');
+            const rightArrow = document.getElementById('liteArrowRight');
+            
+            if (track && leftArrow && rightArrow) {
+                let currentIndex = 0;
+                let cardWidth = 0;
+                let gap = 32; // 2rem = 32px
+                let visibleCards = 4; // default desktop
+
+                function updateVisibleCount() {
+                    if (window.innerWidth <= 700) {
+                        visibleCards = 1;
+                    } else if (window.innerWidth <= 1024) {
+                        visibleCards = 3;
+                    } else {
+                        visibleCards = 4;
+                    }
+                    // Recalculate card width based on first card
+                    if (track.children.length > 0) {
+                        const firstCard = track.children[0];
+                        cardWidth = firstCard.offsetWidth;
+                    }
+                    updateArrows();
+                }
+
+                function updateArrows() {
+                    if (!track.children.length) return;
+                    const maxIndex = track.children.length - visibleCards;
+                    leftArrow.classList.toggle('disabled', currentIndex <= 0);
+                    rightArrow.classList.toggle('disabled', currentIndex >= maxIndex);
+                }
+
+                function scrollToIndex(index) {
+                    if (!track.children.length) return;
+                    const maxIndex = track.children.length - visibleCards;
+                    if (index < 0) index = 0;
+                    if (index > maxIndex) index = maxIndex;
+                    currentIndex = index;
+                    const scrollAmount = currentIndex * (cardWidth + gap);
+                    track.style.transform = `translateX(-${scrollAmount}px)`;
+                    updateArrows();
+                }
+
+                leftArrow.addEventListener('click', () => {
+                    scrollToIndex(currentIndex - 1);
+                });
+
+                rightArrow.addEventListener('click', () => {
+                    scrollToIndex(currentIndex + 1);
+                });
+
+                window.addEventListener('resize', () => {
+                    updateVisibleCount();
+                    // Reset position to avoid overflow
+                    currentIndex = 0;
+                    track.style.transform = 'translateX(0)';
+                });
+
+                // Initial setup
+                updateVisibleCount();
             }
         })();
     </script>
@@ -795,7 +1116,7 @@ And through teamwork and commitment, we aim to make our area cleaner, brighter, 
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
                 navigator.serviceWorker.register('/sw.js').then(function(registration) {
-                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    console.log('ServiceWorker registration successful');
                 }, function(err) {
                     console.log('ServiceWorker registration failed: ', err);
                 });
