@@ -417,7 +417,7 @@
             font-weight: 300;
         }
 
-        /* ----- lite members with arrow navigation ----- */
+        /* ----- lite members with visible arrows ----- */
         .lite-members {
             background: #0a0a0f;
             flex-direction: column;
@@ -440,6 +440,7 @@
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
+            padding: 0 30px; /* space for arrows */
         }
 
         .lite-members-wrapper {
@@ -455,7 +456,7 @@
 
         .lite-member-card {
             flex: 0 0 auto;
-            width: calc((100% - 6rem) / 4); /* 4 cards on desktop with gap */
+            width: calc((100% - 6rem) / 4); /* 4 cards on desktop */
             background: rgba(30,30,40,0.5);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255,255,255,0.05);
@@ -465,7 +466,7 @@
             flex-direction: column;
             overflow: hidden;
             transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
-            aspect-ratio: 3/4; /* keeps card square-ish */
+            aspect-ratio: 3/4;
         }
 
         .lite-member-card:hover {
@@ -505,7 +506,6 @@
             align-items: center;
             justify-content: center;
             padding: 0.8rem 0.5rem;
-            /* no background */
         }
 
         .lite-member-name {
@@ -541,16 +541,16 @@
             transform: scale(1.15);
         }
 
-        /* Navigation arrows */
+        /* Navigation arrows — made prominent */
         .lite-arrow {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
             width: 44px;
             height: 44px;
-            background: rgba(20,20,30,0.8);
+            background: rgba(30,30,45,0.9);
             backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 2px solid rgba(167,139,250,0.6);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -559,50 +559,245 @@
             color: white;
             font-size: 1.8rem;
             transition: all 0.2s;
-            z-index: 10;
-        }
-
-        .lite-arrow:hover {
-            background: rgba(167,139,250,0.3);
-            border-color: #a78bfa;
+            z-index: 20;
             box-shadow: 0 0 15px rgba(167,139,250,0.5);
         }
 
+        .lite-arrow:hover {
+            background: rgba(167,139,250,0.8);
+            border-color: #a78bfa;
+            box-shadow: 0 0 25px #a78bfa;
+        }
+
         .lite-arrow.left {
-            left: -22px;
+            left: -10px;
         }
 
         .lite-arrow.right {
-            right: -22px;
+            right: -10px;
         }
 
         .lite-arrow.disabled {
             opacity: 0.3;
+            border-color: #555;
+            box-shadow: none;
             pointer-events: none;
         }
 
-        /* Responsive for lite members */
-        @media (max-width: 1024px) {
-            .lite-member-card {
-                width: calc((100% - 4rem) / 3); /* 3 cards on tablet */
-            }
+        /* ----- ACTIVITIES section (85% image / 15% details, 4 cards + view all) ----- */
+        .activities {
+            background: #111116;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 5rem 6%;
         }
 
-        @media (max-width: 700px) {
-            .lite-member-card {
-                width: 100%; /* 1 card on mobile */
-            }
-            .lite-arrow {
-                width: 36px;
-                height: 36px;
-                font-size: 1.4rem;
-            }
-            .lite-arrow.left {
-                left: -10px;
-            }
-            .lite-arrow.right {
-                right: -10px;
-            }
+        .activities h2 {
+            font-size: 3rem;
+            font-weight: 400;
+            margin-bottom: 2rem;
+            color: #eaeaea;
+            text-align: center;
+            letter-spacing: 0.2rem;
+        }
+
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto 2.5rem;
+        }
+
+        .activity-card {
+            background: rgba(25,25,35,0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 30px;
+            overflow: hidden;
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 380px; /* fixed height to enforce ratio */
+            box-shadow: 0 10px 20px -10px black;
+            cursor: pointer;
+        }
+
+        .activity-card:hover {
+            transform: translateY(-6px);
+            border-color: #a78bfa60;
+            box-shadow: 0 0 30px #a78bfa30;
+        }
+
+        .activity-img {
+            flex: 8.5; /* 85% */
+            overflow: hidden;
+            border-bottom: 2px solid #2a2a35;
+        }
+
+        .activity-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s;
+            pointer-events: none; /* let the card handle click */
+        }
+
+        .activity-card:hover .activity-img img {
+            transform: scale(1.03);
+        }
+
+        .activity-content {
+            flex: 1.5; /* 15% */
+            padding: 0.8rem 1rem;
+            background: rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .activity-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+            color: #fff;
+            line-height: 1.3;
+        }
+
+        .activity-desc {
+            font-size: 0.85rem;
+            color: #bbb;
+            font-weight: 200;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .view-all-btn {
+            display: inline-block;
+            background: transparent;
+            border: 1.5px solid rgba(167,139,250,0.6);
+            color: #d6c6ff;
+            font-size: 1.3rem;
+            padding: 0.8rem 2.5rem;
+            border-radius: 60px;
+            text-decoration: none;
+            backdrop-filter: blur(5px);
+            transition: 0.2s;
+            margin-top: 0.5rem;
+            letter-spacing: 0.1rem;
+            cursor: pointer;
+        }
+
+        .view-all-btn:hover {
+            background: rgba(167,139,250,0.2);
+            border-color: #a78bfa;
+            color: white;
+            box-shadow: 0 0 25px #a78bfa;
+        }
+
+        /* ----- MODAL (lightbox with zoom) ----- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.95);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            background: #111116;
+            border-radius: 30px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 0 50px rgba(167,139,250,0.3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-image-container {
+            overflow: auto;
+            text-align: center;
+            flex: 1;
+            min-height: 0;
+            max-height: 70vh;
+        }
+
+        .modal-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.1s ease;
+            transform-origin: center center;
+            cursor: zoom-in;
+        }
+
+        .modal-image.zoomed {
+            cursor: zoom-out;
+        }
+
+        .modal-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .modal-controls button {
+            background: rgba(30,30,45,0.9);
+            border: 2px solid rgba(167,139,250,0.6);
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-controls button:hover {
+            background: rgba(167,139,250,0.8);
+            border-color: #a78bfa;
+            box-shadow: 0 0 15px #a78bfa;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 0.5rem;
+            right: 1rem;
+            font-size: 3rem;
+            color: #aaa;
+            cursor: pointer;
+            transition: color 0.2s;
+            line-height: 1;
+            z-index: 1010;
+        }
+
+        .modal-close:hover {
+            color: white;
         }
 
         /* ----- footer (unchanged) ----- */
@@ -732,13 +927,12 @@
             100% { transform: translateX(-50%); }
         }
 
-        /* responsive adjustments for other sections */
-        @media (max-width: 1000px) {
+        /* responsive adjustments */
+        @media (max-width: 1024px) {
             .members-grid { grid-template-columns: repeat(2, 1fr); }
             .member-card { height: 550px; }
-            .contributor-img {
-                width: 180px;
-                height: 180px;
+            .lite-member-card {
+                width: calc((100% - 4rem) / 3);
             }
         }
 
@@ -749,44 +943,36 @@
                 width: 160px;
                 height: 160px;
             }
-            .contributor-name { font-size: 1.3rem; }
+            .lite-arrow {
+                width: 38px;
+                height: 38px;
+                font-size: 1.5rem;
+            }
         }
 
         @media (max-width: 700px) {
             .members-grid { grid-template-columns: 1fr; }
-            .member-card {
+            .member-card { height: 520px; }
+            .lite-member-card {
                 width: 100%;
-                max-width: 100%;
-                margin: 0;
-                height: 520px;
             }
-            .member-name { font-size: 1.5rem; }
-            .member-socials { gap: 1.5rem; font-size: 1.8rem; }
-
-            .contributor-img {
-                width: 150px;
-                height: 150px;
+            .lite-members-container {
+                padding: 0 20px;
             }
-
-            .qr-code {
-                width: 190px;
-                height: 190px;
+            .activities-grid {
+                grid-template-columns: 1fr;
+            }
+            .activity-card {
+                height: 400px;
             }
         }
 
         @media (max-width: 400px) {
             .member-card { height: 480px; }
-            .member-name { font-size: 1.4rem; }
-            .member-socials { gap: 1.2rem; font-size: 1.6rem; }
             .contributor-img {
                 width: 130px;
                 height: 130px;
             }
-            .qr-code {
-                width: 160px;
-                height: 160px;
-            }
-            .footer-grid { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
@@ -801,6 +987,7 @@
         <a href="#about" onclick="document.getElementById('sidebar-toggle').checked = false">ABOUT</a>
         <a href="#members" onclick="document.getElementById('sidebar-toggle').checked = false">MEMBERS</a>
         <a href="#lite-members" onclick="document.getElementById('sidebar-toggle').checked = false">LITE MEMBERS</a>
+        <a href="#activities" onclick="document.getElementById('sidebar-toggle').checked = false">ACTIVITIES</a>
         <a href="#contributors" onclick="document.getElementById('sidebar-toggle').checked = false">CONTRIBUTORS</a>
         <a href="#join" onclick="document.getElementById('sidebar-toggle').checked = false">JOIN</a>
     </div>
@@ -844,6 +1031,13 @@
         </div>
     </section>
 
+    <!-- ACTIVITIES (only 4 most recent) -->
+    <section class="activities section" id="activities">
+        <h2>ACTIVITIES</h2>
+        <div class="activities-grid" id="activitiesGrid"></div>
+        <a href="activities.html" class="view-all-btn">VIEW ALL ACTIVITIES →</a>
+    </section>
+
     <!-- CONTRIBUTORS -->
     <section class="contributors section" id="contributors">
         <h3>CONTRIBUTORS</h3>
@@ -864,7 +1058,7 @@
         <div class="footer-grid">
             <div class="footer-identity">DIGNITY</div>
             <div class="footer-links">
-                <a href="#home">home</a>
+                <a href="#hero">home</a>
                 <a href="#about">about</a>
                 <a href="#members">members</a>
                 <a href="#contributors">contributors</a>
@@ -881,9 +1075,24 @@
         </div>
     </footer>
 
+    <!-- MODAL (for images with zoom) -->
+    <div id="modal" class="modal">
+        <span class="modal-close" id="modalClose">&times;</span>
+        <div class="modal-content">
+            <div class="modal-image-container" id="modalImageContainer">
+                <img id="modalImage" class="modal-image" src="" alt="">
+            </div>
+            <div class="modal-controls">
+                <button id="zoomOutBtn"><i class="fa-solid fa-minus"></i></button>
+                <button id="zoomResetBtn"><i class="fa-solid fa-rotate-left"></i></button>
+                <button id="zoomInBtn"><i class="fa-solid fa-plus"></i></button>
+            </div>
+        </div>
+    </div>
+
     <script>
         (function() {
-            // ----- MEMBERS with role added -----
+            // ----- MEMBERS (unchanged) -----
             const members = [
                 { name: 'OBAIDULLAH SHAIKH', role: 'Ethical Hacker', wa: 'https://wa.me/9769443373', ig: 'https://www.instagram.com/official_mr_obaid?igsh=MTN4MmZxaGNvbGduMQ==' },
                 { name: 'ANSARI SAIFULHUDA', role: 'Fashion Designer', wa: 'https://wa.me/9619461099', ig: 'https://www.instagram.com/_ans_saifulhuda_?igsh=cThmdTZiNWZnMHA3' },
@@ -898,8 +1107,7 @@
                 { name: 'SHAHBAZ SHAIKH', role: 'Network Technician', wa: 'https://wa.me/8318304601', ig: 'https://www.instagram.com/the_shaikh______?igsh=MW80NGNsNGw3ODF3YQ==' },
                 { name: 'AIJAZ MOMIN', role: 'Cyber Cafe Operator', wa: 'https://wa.me/8850443668', ig: 'https://www.instagram.com/aj_momin_?igsh=MWszc200NHJiNGF6aQ==' },
                 { name: 'ARBAZ SHAIKH', role: 'Auto Electrician.', wa: 'https://wa.me/7045413575', ig: 'https://www.instagram.com/shaikh_arbaz_70?igsh=MWVyMzJwdDlzOW91Zw==' },
-                { name: 'RAHMAN SHAIKH', role: 'Helper', wa: 'https://wa.me/7506839334', ig: 'https://www.instagram.com/its__raheman__70?igsh=MWtrNzhyZ3loeHoxOQ==' },
-                // { name: 'ARBAZ SHAIKH', role: 'Creative', wa: 'https://wa.me/7045413575', ig: 'https://www.instagram.com/shaikh_arbaz_70?igsh=MWVyMzJwdDlzOW91Zw==' }
+                { name: 'RAHMAN SHAIKH', role: 'Helper', wa: 'https://wa.me/7506839334', ig: 'https://www.instagram.com/its__raheman__70?igsh=MWtrNzhyZ3loeHoxOQ==' }
             ];
 
             const grid = document.getElementById('membersGrid');
@@ -984,16 +1192,14 @@
                 marquee.appendChild(createSet());
             }
 
-            // ----- LITE MEMBERS with role and arrow navigation -----
+            // ----- LITE MEMBERS (unchanged) -----
             const liteMembers = [
                 { name: 'OWAIS SHAIKH', role: 'Student', wa: 'https://wa.me/9969590291', ig: 'https://www.instagram.com/shk.owais____?igsh=MXQ0Y2E5eXF0anByYg==' },
                 { name: 'ARSALAN SHAIKH', role: 'Student', wa: 'https://wa.me/8928460225', ig: 'https://www.instagram.com/_arshuuuu._.01?igsh=OG5jMjBjNWVxYzZw' },
                 { name: 'ARYAN GUPTA', role: 'Student', wa: 'https://wa.me/1234567893', ig: 'https://www.instagram.com/_aryannnn_pvt_?igsh=MXhoeTllcnV0cml2bA==' },
                 { name: 'FAHAD SHAIKH', role: 'Student', wa: 'https://wa.me/9769067064', ig: 'https://www.instagram.com/_shk.__.fahxd___?igsh=YzBwZnQweXlvaTZu' },
                 { name: 'ASHFAK SAYYED', role: 'Student', wa: 'https://wa.me/8369467670', ig: 'https://www.instagram.com/ashfaqq_94?igsh=MXZmZ2l6Y2d0a3BkNw==' },
-                { name: 'SALMAN SHAIKH', role: 'Kid', wa: 'https://wa.me/1234567896', ig: 'https://www.instagram.com/salman___70___?igsh=MmxxcXI4MWEwY2Ny' },
-                //{ name: 'SALMAN SHAIKH', role: 'Kid', wa: 'https://wa.me/1234567896', ig: 'https://www.instagram.com/salman___70___?igsh=MmxxcXI4MWEwY2Ny' },
-                // { name: 'SAIRA SHAIKH', role: 'Student', wa: 'https://wa.me/1234567897', ig: 'https://instagram.com/saira' }
+                { name: 'SALMAN SHAIKH', role: 'Kid', wa: 'https://wa.me/7506355485', ig: 'https://www.instagram.com/salman___70___?igsh=MmxxcXI4MWEwY2Ny' }
             ];
 
             const liteTrack = document.getElementById('liteMembersTrack');
@@ -1036,7 +1242,7 @@
                 });
             }
 
-            // Arrow navigation logic for lite members
+            // ----- Lite arrows navigation -----
             const track = document.getElementById('liteMembersTrack');
             const leftArrow = document.getElementById('liteArrowLeft');
             const rightArrow = document.getElementById('liteArrowRight');
@@ -1044,35 +1250,29 @@
             if (track && leftArrow && rightArrow) {
                 let currentIndex = 0;
                 let cardWidth = 0;
-                let gap = 32; // 2rem = 32px
-                let visibleCards = 4; // default desktop
+                const gap = 32;
+                let visibleCards = 4;
 
                 function updateVisibleCount() {
-                    if (window.innerWidth <= 700) {
-                        visibleCards = 1;
-                    } else if (window.innerWidth <= 1024) {
-                        visibleCards = 3;
-                    } else {
-                        visibleCards = 4;
-                    }
-                    // Recalculate card width based on first card
+                    if (window.innerWidth <= 700) visibleCards = 1;
+                    else if (window.innerWidth <= 1024) visibleCards = 3;
+                    else visibleCards = 4;
                     if (track.children.length > 0) {
-                        const firstCard = track.children[0];
-                        cardWidth = firstCard.offsetWidth;
+                        cardWidth = track.children[0].offsetWidth;
                     }
                     updateArrows();
                 }
 
                 function updateArrows() {
                     if (!track.children.length) return;
-                    const maxIndex = track.children.length - visibleCards;
+                    const maxIndex = Math.max(0, track.children.length - visibleCards);
                     leftArrow.classList.toggle('disabled', currentIndex <= 0);
                     rightArrow.classList.toggle('disabled', currentIndex >= maxIndex);
                 }
 
                 function scrollToIndex(index) {
                     if (!track.children.length) return;
-                    const maxIndex = track.children.length - visibleCards;
+                    const maxIndex = Math.max(0, track.children.length - visibleCards);
                     if (index < 0) index = 0;
                     if (index > maxIndex) index = maxIndex;
                     currentIndex = index;
@@ -1081,34 +1281,126 @@
                     updateArrows();
                 }
 
-                leftArrow.addEventListener('click', () => {
-                    scrollToIndex(currentIndex - 1);
-                });
-
-                rightArrow.addEventListener('click', () => {
-                    scrollToIndex(currentIndex + 1);
-                });
+                leftArrow.addEventListener('click', () => scrollToIndex(currentIndex - 1));
+                rightArrow.addEventListener('click', () => scrollToIndex(currentIndex + 1));
 
                 window.addEventListener('resize', () => {
                     updateVisibleCount();
-                    // Reset position to avoid overflow
-                    currentIndex = 0;
-                    track.style.transform = 'translateX(0)';
+                    scrollToIndex(0);
                 });
 
-                // Initial setup
                 updateVisibleCount();
             }
-        })();
-    </script>
 
-    <script>
-        // close sidebar when link clicked
-        document.querySelectorAll('.sidebar-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                document.getElementById('sidebar-toggle').checked = false;
+            // ----- ACTIVITIES data (full list) -----
+            const activitiesData = [
+                // { title: 'RAMADAN 2026', description: 'Ramadan Kareem Decoration 2026.', image: 'assets/images/activities/activity4.jpg' },
+                // { title: 'Wall art project', description: 'We painted a community mural at Kurla station.', image: 'assets/images/activities/activity3.jpg' },
+                // { title: 'Cleanliness drive', description: 'Sunday morning cleanup at the park.', image: 'assets/images/activities/activity2.jpg' },
+                { title: 'RAMADAN 2026', description: 'Ramadan Kareem Decoration 2026.', image: 'assets/images/activities/activity1.jpg' },
+                // { title: 'Street play workshop', description: 'Engaging youth through theater.', image: 'assets/images/activities/activity5.jpg' },
+                // { title: 'Food donation drive', description: 'Distributed meals to 100+ families.', image: 'assets/images/activities/activity6.jpg' }
+            ];
+
+            // Populate main 4 activities
+            const activitiesGrid = document.getElementById('activitiesGrid');
+            if (activitiesGrid) {
+                const recent = activitiesData.slice(0, 4);
+                recent.forEach(act => {
+                    const card = document.createElement('div');
+                    card.className = 'activity-card';
+                    card.dataset.image = act.image;
+
+                    const imgDiv = document.createElement('div');
+                    imgDiv.className = 'activity-img';
+                    const img = document.createElement('img');
+                    img.src = act.image;
+                    img.alt = act.title;
+                    imgDiv.appendChild(img);
+
+                    const contentDiv = document.createElement('div');
+                    contentDiv.className = 'activity-content';
+                    contentDiv.innerHTML = `
+                        <div class="activity-title">${act.title}</div>
+                        <div class="activity-desc">${act.description}</div>
+                    `;
+
+                    card.appendChild(imgDiv);
+                    card.appendChild(contentDiv);
+                    
+                    // Click on card opens image modal
+                    card.addEventListener('click', () => showImageModal(act.image));
+                    
+                    activitiesGrid.appendChild(card);
+                });
+            }
+
+            // ----- MODAL with zoom functionality -----
+            const modal = document.getElementById('modal');
+            const modalImage = document.getElementById('modalImage');
+            const modalClose = document.getElementById('modalClose');
+            const zoomInBtn = document.getElementById('zoomInBtn');
+            const zoomOutBtn = document.getElementById('zoomOutBtn');
+            const zoomResetBtn = document.getElementById('zoomResetBtn');
+            let currentScale = 1;
+
+            function showImageModal(imageSrc) {
+                modalImage.src = imageSrc;
+                currentScale = 1;
+                modalImage.style.transform = `scale(${currentScale})`;
+                modal.classList.add('show');
+            }
+
+            // Zoom functions
+            function zoomIn() {
+                currentScale = Math.min(currentScale + 0.2, 3);
+                modalImage.style.transform = `scale(${currentScale})`;
+            }
+
+            function zoomOut() {
+                currentScale = Math.max(currentScale - 0.2, 0.5);
+                modalImage.style.transform = `scale(${currentScale})`;
+            }
+
+            function zoomReset() {
+                currentScale = 1;
+                modalImage.style.transform = `scale(${currentScale})`;
+            }
+
+            // Event listeners
+            zoomInBtn.addEventListener('click', zoomIn);
+            zoomOutBtn.addEventListener('click', zoomOut);
+            zoomResetBtn.addEventListener('click', zoomReset);
+
+            // Double-click to toggle between 1x and 2x
+            modalImage.addEventListener('dblclick', (e) => {
+                e.preventDefault();
+                if (currentScale === 1) {
+                    currentScale = 2;
+                } else {
+                    currentScale = 1;
+                }
+                modalImage.style.transform = `scale(${currentScale})`;
             });
-        });
+
+            // Close modal
+            modalClose.addEventListener('click', () => {
+                modal.classList.remove('show');
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('show');
+                }
+            });
+
+            // Close sidebar when link clicked
+            document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    document.getElementById('sidebar-toggle').checked = false;
+                });
+            });
+        })();
     </script>
 
     <!-- Service Worker Registration -->
